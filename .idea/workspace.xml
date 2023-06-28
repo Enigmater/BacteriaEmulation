@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="emul:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a268ba0c-29c7-4246-8a7d-6a3d091ad376" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/emul.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data/Bacteria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/control/ControlPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/info/CellInfoPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/info/EventsInfoPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/info/MapInfoPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/main/MainPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/main/MainWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/map/MapPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/logic/Force.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/runner/Main.java" afterDir="false" />
+    <list default="true" id="a268ba0c-29c7-4246-8a7d-6a3d091ad376" name="Changes" comment="add mainForm, class Bacteria and gravityRules">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/emul_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/control/BacteriaParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/control/PhysParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/control/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/control/ControlPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/info/CellInfoPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/info/EventsInfoPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/info/MapInfoPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/main/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/main/MainPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/map/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/map/MapPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/Force.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/Force.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,13 +44,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="runner.Main" />
@@ -81,6 +83,14 @@
       <option name="presentableId" value="Default" />
       <updated>1687769256433</updated>
     </task>
+    <task id="LOCAL-00001" summary="add mainForm, class Bacteria and gravityRules">
+      <created>1687927446301</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1687927446301</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -93,5 +103,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add mainForm, class Bacteria and gravityRules" />
+    <option name="LAST_COMMIT_MESSAGE" value="add mainForm, class Bacteria and gravityRules" />
   </component>
 </project>

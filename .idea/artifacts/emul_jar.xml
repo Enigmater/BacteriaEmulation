@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="emul:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/emul_jar</output-path>
+    <root id="archive" name="emul.jar">
+      <element id="module-output" name="emul" />
+    </root>
+  </artifact>
+</component>

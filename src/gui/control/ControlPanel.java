@@ -5,28 +5,37 @@ import logic.Force;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ControlPanel extends JPanel {
+    // buttons (update, start, pause, stop)
     private JButton startButton;
     private JButton pauseButton;
     private JButton stopButton;
     private JButton updateButton;
 
+    // speed
+    private static JLabel speedTitle = new JLabel("Speed");
+    private static JPanel speedPanel;
+    private static JSlider speedSlider;
+    private static JLabel speedValue;
+
     public ControlPanel() {
         setupView();
         setupButtons();
-        addButtons();
+        setupSpeedPanel();
         setVisible(true);
     }
 
     private void setupView() {
         setLayout(new FlowLayout(FlowLayout.CENTER));
-        //setBorder(new TitledBorder("Buttons"));
+        setBorder(new TitledBorder("Control buttons"));
         setPreferredSize(new Dimension(0, 100));
-        setMaximumSize(new Dimension(1000, 100));
+        setMaximumSize(new Dimension(300, 100));
     }
 
     private void setupButtons() {
@@ -34,6 +43,7 @@ public class ControlPanel extends JPanel {
         setupPauseButton();
         setupStopButton();
         setupUpdateButton();
+        addButtons();
     }
 
     private void setupStartButton() {
@@ -79,8 +89,6 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.stop();
-                MainPanel.cellInfoPanel.reset();
-
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
                 stopButton.setEnabled(false);
@@ -110,5 +118,32 @@ public class ControlPanel extends JPanel {
         add(startButton);
         add(pauseButton);
         add(stopButton);
+    }
+
+    private void setupSpeedPanel() {
+        speedPanel = new JPanel();
+        speedPanel.add(speedTitle);
+        setupSpeedSlider();
+        setupSpeedLabel();
+        this.add(speedPanel);
+    }
+    private void setupSpeedSlider() {
+        speedSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 95);
+        speedSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                speedValue.setText(Integer.toString(speedSlider.getValue()));
+            }
+        });
+        speedPanel.add(speedSlider);
+    }
+    private void setupSpeedLabel() {
+        speedValue = new JLabel();
+        speedValue.setText(Integer.toString(speedSlider.getValue()));
+        speedPanel.add(speedValue);
+    }
+
+    public int getTimerDelay() {
+        return Math.abs(speedSlider.getValue() - 100);
     }
 }

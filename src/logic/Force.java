@@ -2,7 +2,7 @@ package logic;
 
 import data.Bacteria;
 import gui.main.MainPanel;
-import gui.info.CellInfoPanel;
+import gui.control.PhysParam;
 import gui.map.MapPanel;
 
 import javax.swing.*;
@@ -13,112 +13,70 @@ import java.util.ArrayList;
 
 public class Force {
     private static Timer timer;
-    private static int timerDelay = 5;
-    private static final int COUNT_BACTERIA = 200;
+    private static int TIMER_DELAY = 5;
     private static final float SPEED = 4f;
     private static final float BORDER = 50;
-    private static final float GRAVITY = 5;
-    public static void update() {
-        deleteBacteria(MainPanel.mapPanel.red);
-        generateBacteria(MainPanel.mapPanel.red, Color.red);
 
+    //
+    private static float GRAVITY = 5;
+    private static float RADIUS_INTERACTION = 100;
+
+    public static void update() {
+        // get count red bacteria
+        int countRed = 200;
+        try {
+            countRed = MainPanel.bacteriaParamPanel.getCountRed();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        // generate red
+        deleteBacteria(MainPanel.mapPanel.red);
+        generateBacteria(MainPanel.mapPanel.red, countRed, Color.red);
+
+        // get count yellow bacteria
+        int countYellow = 200;
+        try {
+            countYellow = MainPanel.bacteriaParamPanel.getCountYellow();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        // generate yellow
         deleteBacteria(MainPanel.mapPanel.yellow);
-        generateBacteria(MainPanel.mapPanel.yellow, Color.yellow);
+        generateBacteria(MainPanel.mapPanel.yellow, countYellow, Color.yellow);
     }
     public static void start() {
         if (timer == null) {
-            timer = new Timer(timerDelay, new ActionListener() {
+            timer = new Timer(TIMER_DELAY, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //moveBacteria(MainPanel.mapPanel.black);
-                    gravityRule(MainPanel.mapPanel.red, MainPanel.mapPanel.red, GRAVITY * -0.1f);
-                    gravityRule(MainPanel.mapPanel.red, MainPanel.mapPanel.yellow, GRAVITY * -0.01f);
-                    gravityRule(MainPanel.mapPanel.yellow, MainPanel.mapPanel.red, GRAVITY * 0.01f);
-                    //gravityRule(MainPanel.mapPanel.yellow, MainPanel.mapPanel.yellow, -0.01f);
+                    setParameters();
+                    // if g > 0 - repulsion
+                    // else - attractive
+                    gravityRule(MainPanel.mapPanel.red, MainPanel.mapPanel.red, GRAVITY * -0.07f);          // red attractive to red
+                    gravityRule(MainPanel.mapPanel.red, MainPanel.mapPanel.yellow, GRAVITY * -0.01f);       // red attractive to yellow
+                    gravityRule(MainPanel.mapPanel.yellow, MainPanel.mapPanel.red, GRAVITY * 0.01f);        // yellow repulsion to red
                     MainPanel.mapPanel.repaint();
-                    CellInfoPanel.update();
                 }
             });
         }
         timer.start();
     }
-
     public static void pause() {
         timer.stop();
     }
-
     public static void stop() {
         timer.stop();
         update();
     }
-
-    public static void generateBacteria(ArrayList<Bacteria> bacteria, Color color){
-        for (int i = 0; i < COUNT_BACTERIA; i++) {
+    public static void generateBacteria(ArrayList<Bacteria> bacteria, int countBacteria, Color color){
+        for (int i = 0; i < countBacteria; i++) {
             // generate coordinate
             float x = (float) (Math.random() * MapPanel.WIDTH) + 25;
             float y = (float) (Math.random() * MapPanel.HEIGHT) + 25;
             // add bacteria in list
             bacteria.add(new Bacteria(x, y, color));
-        }
-    }
-
-    // Average speed all bacteria
-    public static float averageSpeed(ArrayList<Bacteria> bacteria) {
-        float magnitude = 0;
-        for (int i = 0; i < bacteria.size(); i++) {
-            Bacteria bact = bacteria.get(i);
-            magnitude += (float)Math.sqrt(bact.dirX * bact.dirX + bact.dirY * bact.dirY);
-        }
-        return magnitude / 20;
-    }
-    public static void moveBacteria(ArrayList<Bacteria> bacteria){
-        MapPanel mapPanel = MainPanel.mapPanel;
-        for (int i = 0; i < bacteria.size(); i++) {
-            Bacteria bact = bacteria.get(i);
-            bact.x += bact.dirX;
-            bact.y += bact.dirY;
-            //bact.dirX = (float)(Math.random() * 2 + 1);
-            //bact.dirY = (float)(Math.random() * 2 + 1);
-
-            // normalization speed
-            /*float magnitude = (float)Math.sqrt(bact.dirX * bact.dirX + bact.dirY * bact.dirY);
-            if(magnitude > 5f) {
-                bact.dirX /= magnitude;
-                bact.dirY /= magnitude;
-            }*/
-
-            // border repulsion
-            if (bact.x < BORDER) {
-                bact.dirX += SPEED * 0.05f;
-                if (bact.x < 0) {
-                    bact.x = -bact.x + MapPanel.RADIUS_BACTERIA;
-                    bact.dirX *= -0.5f;
-                }
-            }
-            else if (bact.x > mapPanel.getWidth() - BORDER) {
-                bact.dirX -= SPEED * 0.05f;
-                if (bact.x > mapPanel.getWidth()) {
-                    bact.x = mapPanel.getWidth() * 2 - bact.x - MapPanel.RADIUS_BACTERIA;
-                    bact.dirX *= -0.5f;
-                }
-            }
-
-            if (bact.y < BORDER) {
-                bact.dirY += SPEED * 0.05f;
-                if(bact.y < 0) {
-                    bact.y = -bact.y + MapPanel.RADIUS_BACTERIA;
-                    bact.dirY *= -0.5f;
-                }
-            }
-            else if (bact.y > mapPanel.getHeight() - BORDER) {
-                bact.dirY -= SPEED * 0.05f;
-                if (bact.y > mapPanel.getHeight()) {
-                    int mapPanelHeight = MainPanel.controlPanel.getHeight();
-                    bact.y = mapPanel.getHeight() * 2 - bact.y - 100 - mapPanel.RADIUS_BACTERIA;
-                    bact.dirY *= -0.5f;
-                }
-            }
-            bacteria.set(i, bact);
         }
     }
 
@@ -136,7 +94,7 @@ public class Force {
                     float rx = a.x - b.x;
                     float ry = a.y - b.y;
                     float r = (float) (Math.sqrt(rx * rx + ry * ry));
-                    if (r > MapPanel.RADIUS_BACTERIA * 2 && r < 160) {
+                    if (r > 0 && r < RADIUS_INTERACTION) {
                         float F = G / r;
                         fx += F * rx;
                         fy += F * ry;
@@ -151,8 +109,9 @@ public class Force {
             borderRepulsion(a);
         }
     }
-
     private static void borderRepulsion(Bacteria a) {
+        int mapPanelWidth = MainPanel.mapPanel.getWidth();
+        int mapPanelHeight = MainPanel.mapPanel.getHeight();
         // border repulsion
         if (a.x < BORDER) {
             a.dirX += SPEED * 0.05f;
@@ -161,10 +120,10 @@ public class Force {
                 a.dirX *= -0.5f;
             }
         }
-        else if (a.x > MainPanel.mapPanel.getWidth() - BORDER) {
+        else if (a.x > mapPanelWidth - BORDER) {
             a.dirX -= SPEED * 0.05f;
-            if (a.x > MainPanel.mapPanel.getWidth()) {
-                a.x = MainPanel.mapPanel.getWidth() * 2 - a.x - MapPanel.RADIUS_BACTERIA;
+            if (a.x > mapPanelWidth) {
+                a.x = mapPanelWidth * 2 - a.x - MapPanel.RADIUS_BACTERIA;
                 a.dirX *= -0.5f;
             }
         }
@@ -176,16 +135,34 @@ public class Force {
                 a.dirY *= -0.5f;
             }
         }
-        else if (a.y > MainPanel.mapPanel.getHeight() - BORDER) {
+        else if (a.y > mapPanelHeight - BORDER) {
             a.dirY -= SPEED * 0.05f;
-            if (a.y > MainPanel.mapPanel.getHeight()) {
-                int mapPanelHeight = MainPanel.controlPanel.getHeight();
-                a.y = MainPanel.mapPanel.getHeight() * 2 - a.y - 100 - MainPanel.mapPanel.RADIUS_BACTERIA;
+            if (a.y > mapPanelHeight) {
+                a.y = mapPanelHeight * 2 - a.y - MainPanel.mapPanel.RADIUS_BACTERIA;
                 a.dirY *= -0.5f;
             }
         }
     }
     private static void deleteBacteria(ArrayList<Bacteria> bacteria) {
         bacteria.clear();
+    }
+
+    private static void setParameters() {
+        setGravity();
+        setRadiusInteraction();
+        setTimerDelay();
+    }
+
+    private static void setRadiusInteraction() {
+        RADIUS_INTERACTION = MainPanel.physParamPanel.getRadiusInteractionValue();
+    }
+
+    private static void setGravity() {
+        GRAVITY = MainPanel.physParamPanel.getGravityValue();
+    }
+
+    private static void setTimerDelay() {
+        TIMER_DELAY = MainPanel.controlPanel.getTimerDelay();
+        timer.setDelay(TIMER_DELAY);
     }
 }

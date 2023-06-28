@@ -13,8 +13,8 @@ public class MapPanel extends JPanel {
 
 
     public static final int RADIUS_BACTERIA = 10;
-    public static final int WIDTH = 1236;
-    public static final int HEIGHT = 693;
+    public static final int WIDTH = 1200;
+    public static final int HEIGHT = 750;
 
 
     private Random random = new Random();
@@ -24,8 +24,8 @@ public class MapPanel extends JPanel {
         red = new ArrayList<>();
         yellow = new ArrayList<>();
         setupView();
-        Force.generateBacteria(red, Color.red);
-        Force.generateBacteria(yellow, Color.yellow);
+        // Force.update() - delete all bacteria and generate new
+        Force.update();
         setVisible(true);
     }
 

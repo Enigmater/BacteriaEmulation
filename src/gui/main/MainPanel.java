@@ -1,33 +1,33 @@
 package gui.main;
 
+import gui.control.BacteriaParam;
+import gui.control.PhysParam;
 import gui.control.ControlPanel;
 import gui.map.MapPanel;
 import javax.swing.*;
-import gui.info.*;
-
-import java.awt.*;
 
 public class MainPanel extends JPanel {
-
+    // group panels (left, central, right) have X_AXIS
     public static JPanel leftGroupPanel;
     public static JPanel centerGroupPanel;
     public static JPanel rightGroupPanel;
-    public static MapInfoPanel mapInfoPanel;
-    public static CellInfoPanel cellInfoPanel;
-    public static EventsInfoPanel eventInfoPanel;
+    //
+    public static PhysParam physParamPanel;
+    public static BacteriaParam bacteriaParamPanel;
     public static ControlPanel controlPanel;
     public static MapPanel mapPanel;
 
     public MainPanel() {
         setupView();
         setupGroupPanel();
+
         setupMapPanel();
-        setupCellInfoPanel();
-        //setupEventInfoPanel();
-        //setupMapInfoPanel();
+        setupPhysParamPanel();
+        setupBacteriaParamPanel();
         setupControlPanel();
         setVisible(true);
     }
+
 
     private void setupView() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -47,19 +47,14 @@ public class MainPanel extends JPanel {
         this.add(rightGroupPanel);
     }
 
-    private void setupMapInfoPanel() {
-        mapInfoPanel = new MapInfoPanel();
-        centerGroupPanel.add(mapInfoPanel);
+    private void setupPhysParamPanel() {
+        physParamPanel = new PhysParam();
+        rightGroupPanel.add(physParamPanel);
     }
 
-    private void setupEventInfoPanel() {
-        eventInfoPanel = new EventsInfoPanel();
-        centerGroupPanel.add(eventInfoPanel);
-    }
-
-    private void setupCellInfoPanel() {
-        cellInfoPanel = new CellInfoPanel();
-        rightGroupPanel.add(cellInfoPanel);
+    private void setupBacteriaParamPanel() {
+        bacteriaParamPanel = new BacteriaParam();
+        rightGroupPanel.add(bacteriaParamPanel);
     }
 
     private void setupMapPanel() {
@@ -69,6 +64,6 @@ public class MainPanel extends JPanel {
 
     private void setupControlPanel() {
         controlPanel = new ControlPanel();
-        leftGroupPanel.add(controlPanel);
+        rightGroupPanel.add(controlPanel);
     }
 }
