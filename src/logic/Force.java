@@ -7,7 +7,6 @@ import data.YellowBact;
 import gui.control.BacteriaParam;
 import gui.main.MainPanel;
 import gui.map.MapPanel;
-import runner.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,11 +22,11 @@ public class Force {
     private static float SPEED_BACTERIA = 2f;
     private static float GRAVITY = 5;
     private static float RADIUS_INTERACTION = 100;
-    private static int frame = 0;
+    private static int frameFood = 0;
+    private static int frameAge = 0;
+    private static int TIME_PERIOD = 300;
     private static int SPAWNRATE_FOOD = 5;
     private static int MAX_FOOD = 50;
-
-
     public static void update() {
         // get count red bacteria
         int countRed = BacteriaParam.START_COUNT_RED;
@@ -38,8 +37,8 @@ public class Force {
             e.printStackTrace();
         }
         // generate red
-        clearBacteria(MapPanel.red);
-        generateBacteria(MapPanel.red, countRed, 0, Color.red);
+        clearBacteria(MapPanel.redBactList);
+        generateBacteria(MapPanel.redBactList, countRed, 0, Color.red);
 
         // get count yellow bacteria
         int countYellow = BacteriaParam.START_COUNT_YELLOW;
@@ -50,10 +49,10 @@ public class Force {
             e.printStackTrace();
         }
         // generate yellow
-        clearBacteria(MapPanel.yellow);
-        generateBacteria(MapPanel.yellow, countYellow, 1, Color.yellow);
+        clearBacteria(MapPanel.yellowBactList);
+        generateBacteria(MapPanel.yellowBactList, countYellow, 1, Color.yellow);
 
-        clearFood(MapPanel.food);
+        clearFood(MapPanel.foodList);
     }
     public static void start() {
         if (timer == null) {
@@ -63,30 +62,42 @@ public class Force {
                     setParameters();
                     setFrame();
                     spawnFood();
-                    // get bacteria lisst
-                    ArrayList<Bacteria> redList = MapPanel.red;
-                    ArrayList<Bacteria> yellowList = MapPanel.yellow;
-                    // action
-                    gravityRule(yellowList, redList, GRAVITY);
-                    for (Bacteria a : redList) {
-                        foodSearch_pred(a, yellowList);
-                        bacteriaMove(a);
-                    }
-                    for (Bacteria a : yellowList) {
-                        foodSearch_prey(a);
-                        bacteriaMove(a);
-                    }
-                    deleteBacteria(redList);
-                    deleteBacteria(yellowList);
-                    deleteFood();
-                    reproduction(redList);
-                    reproduction(yellowList);
+                    actionPerFrame();
                     // repaint map
                     MainPanel.mapPanel.repaint();
                 }
             });
         }
         timer.start();
+    }
+    private static void actionPerFrame() {
+        // get bacteria list
+        ArrayList<Bacteria> redList = MapPanel.redBactList;
+        ArrayList<Bacteria> yellowList = MapPanel.yellowBactList;
+        // attractive and repulsion for bacteria
+        gravityRule(yellowList, redList, GRAVITY * 0.01f);
+        gravityRule(yellowList, yellowList, GRAVITY * 0.01f);
+        gravityRule(redList, redList, GRAVITY * 0.05f);
+        // search food and bacteria move
+        for (Bacteria a : redList) {
+            foodSearch_pred(a, yellowList);
+            bacteriaMove(a);
+        }
+        for (Bacteria a : yellowList) {
+            foodSearch_prey(a);
+            bacteriaMove(a);
+        }
+        aging(redList);
+        aging(yellowList);
+        die(redList);
+        die(yellowList);
+        // delete bacteria and food if object.toBeDeleted == true
+        deleteBacteria(redList);
+        deleteBacteria(yellowList);
+        deleteFood();
+        // reproduction if enough food
+        reproduction(redList);
+        reproduction(yellowList);
     }
     public static void pause() {
         timer.stop();
@@ -207,19 +218,22 @@ public class Force {
     }
     // food search - bacteria "a" look for closest food in array "bact"
     private static void foodSearch_pred(Bacteria a, ArrayList<Bacteria> bact) {
-        if (bact.size() == 0) return;
+        if (a.saturation > 80 || bact.size() == 0) {
+            randomRotation(a);
+            return;
+        }
         int width = MainPanel.mapPanel.getWidth();
         int height = MainPanel.mapPanel.getHeight();
+        float distanceToEat = MapPanel.RADIUS_BACTERIA * MapPanel.RADIUS_BACTERIA + MapPanel.RADIUS_BACTERIA * MapPanel.RADIUS_BACTERIA;
         float minFoodDist = (width * width) + (height * height);
         if (a.type == 0) {
             Bacteria closestFood = null;
             // find minFoodDist
             for (Bacteria b : bact) {
-                if (a == b) continue;
-                if (b.toBeDeleted) continue;
+                if (a == b || b.toBeDeleted) continue;
                 float dist2 = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
                 if (dist2 < a.sightDistance * a.sightDistance) {
-                    if (dist2 < minFoodDist) {
+                    if (dist2 < minFoodDist && b.food < 6f) {
                         minFoodDist = dist2;
                         closestFood = b;
                     }
@@ -229,30 +243,34 @@ public class Force {
             if (closestFood != null) {
                 a.rotationX = closestFood.x - a.x;
                 a.rotationY = closestFood.y - a.y;
-                if (minFoodDist < MapPanel.RADIUS_BACTERIA * MapPanel.RADIUS_BACTERIA + MapPanel.RADIUS_BACTERIA * MapPanel.RADIUS_BACTERIA) {
+
+                if (minFoodDist < distanceToEat) {
                     closestFood.toBeDeleted = true;
                     a.food += closestFood.food * 0.1f;
                 }
             }
             // else - random rotation
             else {
-                if (Math.random() < a.directionChangeRate) {
-                    double randomAngle = Math.random() * Math.PI * 2;
-                    a.rotationX = (float) Math.cos(randomAngle) * 2;
-                    a.rotationY = (float) Math.sin(randomAngle) * 2;
-                }
+                randomRotation(a);
             }
         }
     }
+    private static void randomRotation(Bacteria a) {
+        if (Math.random() < a.directionChangeRate) {
+            double randomAngle = Math.random() * Math.PI * 2;
+            a.rotationX = (float) Math.cos(randomAngle) * 2;
+            a.rotationY = (float) Math.sin(randomAngle) * 2;
+        }
+    }
     private static void foodSearch_prey(Bacteria a) {
-        if (MapPanel.food.size() == 0) return;
+        if (MapPanel.foodList.size() == 0) return;
         int width = MainPanel.mapPanel.getWidth();
         int height = MainPanel.mapPanel.getHeight();
         float minFoodDist = (width * width) + (height * height);
         if (a.type == 1) {
             Food closestFood = null;
             // find min food distance
-            for (Food f : MapPanel.food) {
+            for (Food f : MapPanel.foodList) {
                 if (f.toBeDeleted) continue;
                 float dist2 = (a.x - f.x) * (a.x - f.x) + (a.y - f.y) * (a.y - f.y);
                 if(dist2 < a.sightDistance * a.sightDistance) {
@@ -282,16 +300,16 @@ public class Force {
         }
     }
     private static void spawnFood() {
-        if (MapPanel.food.size() < MAX_FOOD && frame == SPAWNRATE_FOOD) {
+        if (MapPanel.foodList.size() < MAX_FOOD && frameFood == SPAWNRATE_FOOD) {
             Food fd = new Food((float)(Math.random() * (MapPanel.WIDTH - 100) + 50), (float)(Math.random() * (MapPanel.HEIGHT - 100) + 50));
-            MapPanel.food.add(fd);
+            MapPanel.foodList.add(fd);
         }
     }
     private static void reproduction(ArrayList<Bacteria> bact) {
         for (int i = 0; i < bact.size(); i++) {
             Bacteria a = bact.get(i);
             if (a.food >= 6) {
-                a.food -= 3;
+                a.food -= 4;
                 int type = a.type;
                 if (Math.random() < 0.05) {
                     type = (int) (Math.random() * 2);
@@ -303,13 +321,22 @@ public class Force {
                 else if (type == 1) {
                     b = new YellowBact(a.x + (float) Math.random() * 10 - 5, a.y + (float) Math.random() * 10 - 5, Color.yellow);
                 }
-                /*if(Math.random() < 0.5) {
-                    if(Math.random() < 0.5) b.speed -= 0.1;
-                    else b.speed += 0.1;
-                    if(b.speed < 0.1f) b.speed = 0.1f;
-                    else if(b.speed > 10f) b.speed = 10f;
-                }*/
                 bact.add(b);
+            }
+        }
+    }
+    private static void die(ArrayList<Bacteria> bact) {
+        for (int i = 0; i < bact.size(); i++) {
+            Bacteria a = bact.get(i);
+            if (a.age >= 80 || a.food <= 0) a.toBeDeleted = true;
+        }
+    }
+    private static void aging(ArrayList<Bacteria> bact) {
+        if (frameAge == TIME_PERIOD) {
+            for (int i = 0; i < bact.size(); i++) {
+                Bacteria a = bact.get(i);
+                a.age++;
+                a.saturation -= Math.random() * 10;
             }
         }
     }
@@ -328,16 +355,19 @@ public class Force {
         food.clear();
     }
     private static void deleteFood() {
-        for (int i = 0; i < MapPanel.food.size(); i++) {
-            Food fd = MapPanel.food.get(i);
+        for (int i = 0; i < MapPanel.foodList.size(); i++) {
+            Food fd = MapPanel.foodList.get(i);
             if (fd.toBeDeleted) {
-                MapPanel.food.remove(i--);
+                MapPanel.foodList.remove(i--);
             }
         }
     }
     private static void setFrame() {
-        frame++;
-        if (frame == SPAWNRATE_FOOD + 1) frame = 0;
+        frameFood++;
+        if (frameFood == SPAWNRATE_FOOD + 1) frameFood = 0;
+
+        frameAge++;
+        if (frameAge == TIME_PERIOD + 1) frameAge = 0;
     }
     private static void setParameters() {
         setGravity();
@@ -355,7 +385,7 @@ public class Force {
     }
     private static void setSpawnrateFood() {
         SPAWNRATE_FOOD = MainPanel.foodParamPanel.getSpawnrate();
-        if (frame > SPAWNRATE_FOOD) frame = SPAWNRATE_FOOD;
+        if (frameFood > SPAWNRATE_FOOD) frameFood = SPAWNRATE_FOOD;
     }
     private static void setRadiusInteraction() {
         RADIUS_INTERACTION = MainPanel.physParamPanel.getRadiusInteractionValue();

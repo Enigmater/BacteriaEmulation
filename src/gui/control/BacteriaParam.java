@@ -10,7 +10,7 @@ public class BacteriaParam extends JPanel {
 
     public static final int START_COUNT_RED = 20;
     public static final int START_COUNT_YELLOW = 20;
-    public static final int START_SPEED = 25;
+    public static final int START_SPEED = 5;
     // red count
     private static JLabel countRedTitle = new JLabel("Red");
     private static JPanel countRedPanel;

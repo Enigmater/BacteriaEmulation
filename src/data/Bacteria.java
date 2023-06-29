@@ -11,10 +11,12 @@ public class Bacteria {
     public float rotationY;
     public float angleRotation;
     public float rotationSpeed = 0.2f;
-    public float sightDistance = 1000.0f;
+    public float sightDistance = 100.0f;
     public float directionChangeRate = 0.05f;
     public boolean toBeDeleted;
     public float food;
+    public float saturation;
+    public int age;
     // dirX, dirY - velocity for OX & OY
     public float dirX;
     public float dirY;
@@ -32,6 +34,8 @@ public class Bacteria {
         angleRotation = 0;
         toBeDeleted = false;
         food = 3f;
+        saturation = 100;
+        age = 0;
         //
         dirX = dirY = 0.01f;
         type = -1;

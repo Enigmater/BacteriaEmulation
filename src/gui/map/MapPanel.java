@@ -2,7 +2,6 @@ package gui.map;
 
 import data.Bacteria;
 import data.Food;
-import data.RedBact;
 import logic.Force;
 
 import javax.swing.*;
@@ -21,42 +20,54 @@ public class MapPanel extends JPanel {
 
 
     private Random random = new Random();
-    public static ArrayList<Bacteria> red;
-    public static ArrayList<Bacteria> yellow;
-    public static ArrayList<Food> food;
+    public static ArrayList<Bacteria> redBactList;
+    public static ArrayList<Bacteria> yellowBactList;
+    public static ArrayList<Food> foodList;
+
+    public static JLabel countRedInfo;
+    public static JLabel countYellowInfo;
     public MapPanel() {
-        red = new ArrayList<>();
-        yellow = new ArrayList<>();
-        food = new ArrayList<>();
+        redBactList = new ArrayList<>();
+        yellowBactList = new ArrayList<>();
+        foodList = new ArrayList<>();
         setupView();
-        // Force.update() - delete all bacteria and generate new
-        Force.update();
+        setupLabel();
+        Force.update();     // - delete all bacteria and generate new
         setVisible(true);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        drawBacteria(g, red);
-        drawBacteria(g, yellow);
+        drawBacteria(g, redBactList);
+        drawBacteria(g, yellowBactList);
+        try {
+            countRedInfo.setText("Count red: "  + Integer.toString(redBactList.size()));
+            countYellowInfo.setText("Count yellow: "  + Integer.toString(yellowBactList.size()));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         drawFood(g);
     }
 
     private void drawFood(Graphics g) {
-        for (int i = 0; i < food.size(); i++) {
-            Food fd = food.get(i);
+        for (int i = 0; i < foodList.size(); i++) {
+            Food fd = foodList.get(i);
             g.setColor(fd.COLOR[fd.type]);
             g.fillOval((int) fd.x - FOOD_RADIUS, (int) fd.y - FOOD_RADIUS, FOOD_RADIUS * 2, FOOD_RADIUS * 2);
         }
     }
-
     private void setupView() {
         setBorder(new BevelBorder(BevelBorder.RAISED));
         setSize(WIDTH, HEIGHT);
     }
-
-
-
+    private void setupLabel() {
+        countRedInfo = new JLabel("Count red: " + Integer.toString(redBactList.size()));
+        this.add(countRedInfo);
+        countYellowInfo = new JLabel("Count yellow: " + Integer.toString(yellowBactList.size()));
+        this.add(countYellowInfo);
+    }
     private void drawBacteria(Graphics g, ArrayList<Bacteria> bacteria) {
         for (int i = 0; i < bacteria.size(); i++) {
             Bacteria bact = bacteria.get(i);
