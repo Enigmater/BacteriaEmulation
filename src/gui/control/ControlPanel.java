@@ -144,6 +144,6 @@ public class ControlPanel extends JPanel {
     }
 
     public int getTimerDelay() {
-        return Math.abs(speedSlider.getValue() - 100);
+        return Math.abs(speedSlider.getValue() - speedSlider.getMaximum());
     }
 }
