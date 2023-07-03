@@ -1,11 +1,12 @@
 package logic;
 
 import data.*;
-import gui.control.BacteriaParam;
+import gui.parametrs.BacteriaParam;
 import gui.main.MainPanel;
 import gui.map.MapPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -80,11 +81,11 @@ public class Force {
         actionForBacteria(yellowList);
         actionForBacteria(blueList);
         // attractive and repulsion for bacteria
-        gravityRule(yellowList, redList, GRAVITY * 0.01f);
-        gravityRule(yellowList, yellowList, GRAVITY * 0.01f);
+        //gravityRule(yellowList, redList, GRAVITY * 0.01f);
+        gravityRule(yellowList, yellowList, GRAVITY * -0.01f);
         gravityRule(redList, redList, GRAVITY * 0.05f);
-        gravityRule(blueList, yellowList, GRAVITY * -0.08f);
-        gravityRule(blueList, redList, GRAVITY * 0.01f);
+        gravityRule(blueList, yellowList, GRAVITY * -0.02f);
+        //gravityRule(blueList, redList, GRAVITY * 0.01f);
         deleteFood();
     }
     private static void actionForBacteria(ArrayList<Bacteria> bact) {
@@ -179,8 +180,10 @@ public class Force {
             a.angleRotation -= (float)(Math.PI * 2.0);
         // change speed bacteria
         if(a.rotationX * a.rotationX + a.rotationY * a.rotationY > 1) {
-            a.dirX += (float)Math.cos(a.angleRotation) * SPEED_BACTERIA;
-            a.dirY += (float)Math.sin(a.angleRotation) * SPEED_BACTERIA;
+            float acs = 1f;
+            if (a.type == 0) acs = 1.2f;
+            a.dirX += (float)Math.cos(a.angleRotation) * SPEED_BACTERIA * acs;
+            a.dirY += (float)Math.sin(a.angleRotation) * SPEED_BACTERIA * acs;
         }
     }
     private static void borderRepulsion(Bacteria a) {
@@ -219,8 +222,8 @@ public class Force {
     }
     // food search - bacteria "a" look for closest food in array "bact"
     private static void foodSearch_pred(RedBact a) {
-        // predator won't eat prey if his saturation > 95 or count preys < 6
-        if (a.food > 6f || (MapPanel.yellowBactList.size() < 6 && MapPanel.blueBactList.size() < 6)) {
+        // predator won't eat prey if his 6 > food > 9 or count preys < 6
+        if ((a.food > 6f && a.food < 9f) || (MapPanel.yellowBactList.size() < 6 && MapPanel.blueBactList.size() < 6)) {
             randomRotation(a);
             return;
         }
@@ -242,7 +245,6 @@ public class Force {
                         closestFood.toBeDeleted = true;
                         float getFood = closestFood.food * 0.1f;
                         a.food += getFood;
-                        a.saturation += getFood * 5;
                     }
                 }
             }
@@ -323,8 +325,9 @@ public class Force {
     private static void reproduction(ArrayList<Bacteria> bact) {
         for (int i = 0; i < bact.size(); i++) {
             Bacteria a = bact.get(i);
-            if (a.food >= 6) {
+            if (a.food >= 6 && a.countChild < 5) {
                 a.food -= 3;
+                a.countChild++;
                 int type = a.type;
                 if (Math.random() < 0.05f) {
                     type = (int) (Math.random() * 3);
@@ -337,6 +340,8 @@ public class Force {
                     else {
                         if (((RedBact)b).damage > 3) ((RedBact) b).damage--;
                     }
+                    if (a.countChild == 5) a.color = new Color(139,0,0);
+                    bact.set(i, a);
                     MainPanel.mapPanel.redBactList.add(b);
                 }
                 else if (type == 1) {
@@ -347,6 +352,8 @@ public class Force {
                     else {
                         if (((YellowBact)b).health > 50) ((YellowBact)b).health -= 10;
                     }
+                    if (a.countChild == 5) a.color = new Color(255,186,0);
+                    bact.set(i, a);
                     MainPanel.mapPanel.yellowBactList.add(b);
                 }
                 else if (type == 2) {
@@ -357,6 +364,8 @@ public class Force {
                     else {
                         if (((BlueBact)b).protection > 0.2f) ((BlueBact)b).protection -= 0.05f;
                     }
+                    if (a.countChild == 5) a.color = new Color(0,0,139);
+                    bact.set(i, a);
                     MainPanel.mapPanel.blueBactList.add(b);
                 }
             }
@@ -374,9 +383,6 @@ public class Force {
                 Bacteria a = bact.get(i);
                 a.age++;
                 a.food -= FOOD_FOR_AGE;
-                if (a.type == 0) {
-                    ((RedBact) a).saturation -= Math.random() * 5;
-                }
             }
         }
     }

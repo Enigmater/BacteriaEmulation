@@ -6,18 +6,21 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a268ba0c-29c7-4246-8a7d-6a3d091ad376" name="Changes" comment="add saturation; aging and dying bacteria">
-      <change afterPath="$PROJECT_DIR$/src/data/BlueBact.java" afterDir="false" />
+    <list default="true" id="a268ba0c-29c7-4246-8a7d-6a3d091ad376" name="Changes" comment="add bacteria characteristics (new types),update reproduction">
+      <change afterPath="$PROJECT_DIR$/src/gui/statistics/ChartControlPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/statistics/ChartWindow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/statistics/Statistics.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emul.iml" beforeDir="false" afterPath="$PROJECT_DIR$/emul.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/Bacteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/Bacteria.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/RedBact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/RedBact.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/YellowBact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/YellowBact.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/control/BacteriaParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/control/BacteriaParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/control/BacteriaParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parametrs/BacteriaParam.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/control/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/control/ControlPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/main/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/main/MainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/control/FoodParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parametrs/FoodParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/control/PhysParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parametrs/PhysParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/main/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/main/MainPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/map/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/map/MapPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/Force.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/Force.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/runner/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/runner/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +116,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688051077137</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add bacteria characteristics (new types),update reproduction">
+      <created>1688374804010</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1688374804010</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -132,7 +142,8 @@
     <MESSAGE value="add some slideres (phys/bact params and speed)" />
     <MESSAGE value="add pred/preys, food, and reproduction" />
     <MESSAGE value="add saturation; aging and dying bacteria" />
-    <option name="LAST_COMMIT_MESSAGE" value="add saturation; aging and dying bacteria" />
+    <MESSAGE value="add bacteria characteristics (new types),update reproduction" />
+    <option name="LAST_COMMIT_MESSAGE" value="add bacteria characteristics (new types),update reproduction" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

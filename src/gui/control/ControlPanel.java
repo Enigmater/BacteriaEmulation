@@ -1,6 +1,7 @@
 package gui.control;
 
 import gui.main.MainPanel;
+import gui.statistics.Statistics;
 import logic.Force;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ import java.awt.event.ActionListener;
 public class ControlPanel extends JPanel {
 
     private static final int START_SPEED = 100;
+    public static boolean isStart;
     // buttons (update, start, pause, stop)
     private JButton startButton;
     private JButton pauseButton;
@@ -57,6 +59,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.start();
+                isStart = true;
                 startButton.setEnabled(false);
                 pauseButton.setEnabled(true);
                 stopButton.setEnabled(true);
@@ -76,6 +79,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.pause();
+                isStart = false;
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
                 stopButton.setEnabled(true);
@@ -95,6 +99,8 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.stop();
+                Statistics.clear();
+                isStart = false;
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
                 stopButton.setEnabled(false);
@@ -114,6 +120,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.update();
+                Statistics.clear();
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
                 stopButton.setEnabled(false);

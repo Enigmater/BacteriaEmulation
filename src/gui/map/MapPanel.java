@@ -37,7 +37,6 @@ public class MapPanel extends JPanel {
         Force.update();     // - delete all bacteria and generate new
         setVisible(true);
     }
-
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -45,16 +44,15 @@ public class MapPanel extends JPanel {
         drawBacteria(g, yellowBactList);
         drawBacteria(g, blueBactList);
         try {
-            countRedInfo.setText("Count red: "  + Integer.toString(redBactList.size()));
-            countYellowInfo.setText("Count yellow: "  + Integer.toString(yellowBactList.size()));
-            countBlueInfo.setText("Count blue: " + Integer.toString(blueBactList.size()));
+            countRedInfo.setText("Count red: "  + redBactList.size());
+            countYellowInfo.setText("Count yellow: "  + yellowBactList.size());
+            countBlueInfo.setText("Count blue: " + blueBactList.size());
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         drawFood(g);
     }
-
     private void drawFood(Graphics g) {
         for (int i = 0; i < foodList.size(); i++) {
             Food fd = foodList.get(i);

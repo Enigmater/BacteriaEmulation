@@ -1,4 +1,4 @@
-package gui.control;
+package gui.parametrs;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -8,13 +8,13 @@ import java.awt.*;
 
 public class BacteriaParam extends JPanel {
 
-    public static final int START_COUNT_RED = 20;
-    private static final int MAX_COUNT_RED = 500;
+    public static final int START_COUNT_RED = 10;
+    private static final int MAX_COUNT_RED = 100;
     public static final int START_COUNT_YELLOW = 20;
-    private static final int MAX_COUNT_YELLOW = 500;
+    private static final int MAX_COUNT_YELLOW = 100;
     private static final int START_SPEED = 20;
     private static final int MAX_SPEED = 100;
-    private static final int START_AGING_TIME = 700;
+    private static final int START_AGING_TIME = 850;
     private static final int MIN_AGING_TIME = 100;
     private static final int MAX_AGING_TIME = 1000;
     // red count

@@ -1,4 +1,4 @@
-package gui.control;
+package gui.parametrs;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -7,8 +7,10 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class FoodParam extends JPanel {
-    public static final int START_MAXCOUNT_FOOD = 100;
-    public static final int START_SPAWNRATE = 100;
+    public static final int START_MAXCOUNT_FOOD = 50;
+    public static final int MAX_MAXCOUNT_FOOD = 100;
+    public static final int START_SPAWNRATE = 85;
+    public static final int MAX_SPAWNRATE = 100;
     // max count food
     private static JLabel maxCountFoodTitle = new JLabel("Max food");
     private static JPanel maxCountFoodPanel;
@@ -46,7 +48,7 @@ public class FoodParam extends JPanel {
         this.add(maxCountFoodPanel);
     }
     private void setupMaxCountFoodSlider() {
-        maxCountFoodSlider = new JSlider(JSlider.HORIZONTAL, 0, 500, START_MAXCOUNT_FOOD);
+        maxCountFoodSlider = new JSlider(JSlider.HORIZONTAL, 0, MAX_MAXCOUNT_FOOD, START_MAXCOUNT_FOOD);
         maxCountFoodSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -69,7 +71,7 @@ public class FoodParam extends JPanel {
         this.add(SpawnratePanel);
     }
     private void setupSpawnrateSlider() {
-        SpawnrateSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, START_SPAWNRATE);
+        SpawnrateSlider = new JSlider(JSlider.HORIZONTAL, 0, MAX_SPAWNRATE, START_SPAWNRATE);
         SpawnrateSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

@@ -1,8 +1,8 @@
 package gui.main;
 
-import gui.control.BacteriaParam;
-import gui.control.FoodParam;
-import gui.control.PhysParam;
+import gui.parametrs.BacteriaParam;
+import gui.parametrs.FoodParam;
+import gui.parametrs.PhysParam;
 import gui.control.ControlPanel;
 import gui.map.MapPanel;
 import javax.swing.*;
