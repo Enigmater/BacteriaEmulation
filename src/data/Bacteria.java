@@ -15,7 +15,6 @@ public class Bacteria {
     public float directionChangeRate = 0.05f;
     public boolean toBeDeleted;
     public float food;
-    public float saturation;
     public int age;
     // dirX, dirY - velocity for OX & OY
     public float dirX;
@@ -25,7 +24,7 @@ public class Bacteria {
     // type = -1 - nobody
     public int type;
     public Color color;
-    public Bacteria(float x, float y, Color color) {
+    public Bacteria(float x, float y) {
         this.x = x;
         this.y = y;
         //
@@ -34,11 +33,25 @@ public class Bacteria {
         angleRotation = 0;
         toBeDeleted = false;
         food = 3f;
-        saturation = 100;
         age = 0;
         //
         dirX = dirY = 0.01f;
         type = -1;
-        this.color = color;
+        this.color = Color.BLACK;
+    }
+
+    public Bacteria(Bacteria bact) {
+        this.x = bact.x;
+        this.y = bact.y;
+        this.rotationX = bact.rotationX;
+        this.rotationY = bact.rotationY;
+        this.angleRotation = bact.angleRotation;
+        this.toBeDeleted = bact.toBeDeleted;
+        this.food = bact.food;
+        this.age = bact.age;
+        this.dirX = bact.dirX;
+        this.dirY = bact.dirY;
+        this.type = bact.type;
+        this.color = bact.color;
     }
 }

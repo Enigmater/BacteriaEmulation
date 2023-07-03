@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ControlPanel extends JPanel {
+
+    private static final int START_SPEED = 100;
     // buttons (update, start, pause, stop)
     private JButton startButton;
     private JButton pauseButton;
@@ -59,6 +61,8 @@ public class ControlPanel extends JPanel {
                 pauseButton.setEnabled(true);
                 stopButton.setEnabled(true);
                 updateButton.setEnabled(false);
+                MainPanel.bacteriaParamPanel.countRedSlider.setEnabled(false);
+                MainPanel.bacteriaParamPanel.countYellowSlider.setEnabled(false);
             }
         });
     }
@@ -76,6 +80,8 @@ public class ControlPanel extends JPanel {
                 pauseButton.setEnabled(false);
                 stopButton.setEnabled(true);
                 updateButton.setEnabled(true);
+                MainPanel.bacteriaParamPanel.countRedSlider.setEnabled(true);
+                MainPanel.bacteriaParamPanel.countYellowSlider.setEnabled(true);
             }
         });
     }
@@ -93,6 +99,8 @@ public class ControlPanel extends JPanel {
                 pauseButton.setEnabled(false);
                 stopButton.setEnabled(false);
                 updateButton.setEnabled(true);
+                MainPanel.bacteriaParamPanel.countRedSlider.setEnabled(true);
+                MainPanel.bacteriaParamPanel.countYellowSlider.setEnabled(true);
             }
         });
     }
@@ -128,7 +136,7 @@ public class ControlPanel extends JPanel {
         this.add(speedPanel);
     }
     private void setupSpeedSlider() {
-        speedSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 95);
+        speedSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, START_SPEED);
         speedSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

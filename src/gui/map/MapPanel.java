@@ -22,13 +22,15 @@ public class MapPanel extends JPanel {
     private Random random = new Random();
     public static ArrayList<Bacteria> redBactList;
     public static ArrayList<Bacteria> yellowBactList;
+    public static ArrayList<Bacteria> blueBactList;
     public static ArrayList<Food> foodList;
-
     public static JLabel countRedInfo;
     public static JLabel countYellowInfo;
+    public static JLabel countBlueInfo;
     public MapPanel() {
         redBactList = new ArrayList<>();
         yellowBactList = new ArrayList<>();
+        blueBactList = new ArrayList<>();
         foodList = new ArrayList<>();
         setupView();
         setupLabel();
@@ -41,9 +43,11 @@ public class MapPanel extends JPanel {
         super.paint(g);
         drawBacteria(g, redBactList);
         drawBacteria(g, yellowBactList);
+        drawBacteria(g, blueBactList);
         try {
             countRedInfo.setText("Count red: "  + Integer.toString(redBactList.size()));
             countYellowInfo.setText("Count yellow: "  + Integer.toString(yellowBactList.size()));
+            countBlueInfo.setText("Count blue: " + Integer.toString(blueBactList.size()));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -60,13 +64,19 @@ public class MapPanel extends JPanel {
     }
     private void setupView() {
         setBorder(new BevelBorder(BevelBorder.RAISED));
+        setBackground(Color.DARK_GRAY);
         setSize(WIDTH, HEIGHT);
     }
     private void setupLabel() {
         countRedInfo = new JLabel("Count red: " + Integer.toString(redBactList.size()));
+        countRedInfo.setForeground(Color.WHITE);
         this.add(countRedInfo);
         countYellowInfo = new JLabel("Count yellow: " + Integer.toString(yellowBactList.size()));
+        countYellowInfo.setForeground(Color.WHITE);
         this.add(countYellowInfo);
+        countBlueInfo = new JLabel("Count blue: " + Integer.toString(blueBactList.size()));
+        countBlueInfo.setForeground(Color.WHITE);
+        this.add(countBlueInfo);
     }
     private void drawBacteria(Graphics g, ArrayList<Bacteria> bacteria) {
         for (int i = 0; i < bacteria.size(); i++) {

@@ -1,15 +1,11 @@
 package logic;
 
-import data.Bacteria;
-import data.Food;
-import data.RedBact;
-import data.YellowBact;
+import data.*;
 import gui.control.BacteriaParam;
 import gui.main.MainPanel;
 import gui.map.MapPanel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,21 +20,24 @@ public class Force {
     private static float RADIUS_INTERACTION = 100;
     private static int frameFood = 0;
     private static int frameAge = 0;
+
+    // every time in period age++
     private static int TIME_PERIOD = 300;
     private static int SPAWNRATE_FOOD = 5;
-    private static int MAX_FOOD = 50;
+    private static int MAX_FOOD_ON_SCREEN = 50;
+    private static float FOOD_FOR_AGE = 0.5f;
     public static void update() {
         // get count red bacteria
         int countRed = BacteriaParam.START_COUNT_RED;
         try {
             countRed = MainPanel.bacteriaParamPanel.getCountRed();
         }
-        catch (Exception e){
+        catch (Exception e) {
             e.printStackTrace();
         }
         // generate red
         clearBacteria(MapPanel.redBactList);
-        generateBacteria(MapPanel.redBactList, countRed, 0, Color.red);
+        generateBacteria(MapPanel.redBactList, countRed, 0);
 
         // get count yellow bacteria
         int countYellow = BacteriaParam.START_COUNT_YELLOW;
@@ -50,7 +49,9 @@ public class Force {
         }
         // generate yellow
         clearBacteria(MapPanel.yellowBactList);
-        generateBacteria(MapPanel.yellowBactList, countYellow, 1, Color.yellow);
+        generateBacteria(MapPanel.yellowBactList, countYellow, 1);
+
+        clearBacteria(MapPanel.blueBactList);
 
         clearFood(MapPanel.foodList);
     }
@@ -74,30 +75,29 @@ public class Force {
         // get bacteria list
         ArrayList<Bacteria> redList = MapPanel.redBactList;
         ArrayList<Bacteria> yellowList = MapPanel.yellowBactList;
+        ArrayList<Bacteria> blueList = MapPanel.blueBactList;
+        actionForBacteria(redList);
+        actionForBacteria(yellowList);
+        actionForBacteria(blueList);
         // attractive and repulsion for bacteria
         gravityRule(yellowList, redList, GRAVITY * 0.01f);
         gravityRule(yellowList, yellowList, GRAVITY * 0.01f);
         gravityRule(redList, redList, GRAVITY * 0.05f);
-        // search food and bacteria move
-        for (Bacteria a : redList) {
-            foodSearch_pred(a, yellowList);
-            bacteriaMove(a);
-        }
-        for (Bacteria a : yellowList) {
-            foodSearch_prey(a);
-            bacteriaMove(a);
-        }
-        aging(redList);
-        aging(yellowList);
-        die(redList);
-        die(yellowList);
-        // delete bacteria and food if object.toBeDeleted == true
-        deleteBacteria(redList);
-        deleteBacteria(yellowList);
+        gravityRule(blueList, yellowList, GRAVITY * -0.08f);
+        gravityRule(blueList, redList, GRAVITY * 0.01f);
         deleteFood();
-        // reproduction if enough food
-        reproduction(redList);
-        reproduction(yellowList);
+    }
+    private static void actionForBacteria(ArrayList<Bacteria> bact) {
+        if (bact.size() == 0) return;
+        die(bact);
+        for (Bacteria a : bact) {
+            if (a.type == 0) foodSearch_pred((RedBact) a);
+            else foodSearch_prey(a);
+            bacteriaMove(a);
+        }
+        aging(bact);
+        deleteBacteria(bact);       // delete bacteria if object.toBeDeleted == true
+        reproduction(bact);
     }
     public static void pause() {
         timer.stop();
@@ -106,17 +106,20 @@ public class Force {
         timer.stop();
         update();
     }
-    private static void generateBacteria(ArrayList<Bacteria> bacteria, int countBacteria, int type, Color color){
+    private static void generateBacteria(ArrayList<Bacteria> bacteria, int countBacteria, int type){
         for (int i = 0; i < countBacteria; i++) {
             // generate coordinate
             float x = (float) (Math.random() * MapPanel.WIDTH) + 25;
             float y = (float) (Math.random() * MapPanel.HEIGHT) + 25;
             // add bacteria in list
             if (type == 0) {
-                bacteria.add(new RedBact(x, y, color));
+                bacteria.add(new RedBact(x, y));
             }
             else if (type == 1) {
-                bacteria.add(new YellowBact(x, y, color));
+                bacteria.add(new YellowBact(x, y));
+            }
+            else if (type == 2) {
+                bacteria.add(new BlueBact(x, y));
             }
         }
     }
@@ -153,8 +156,6 @@ public class Force {
             a.y += a.dirY;
 
             borderRepulsion(a);
-
-
         }
     }
     private static void rotation(Bacteria a) {
@@ -217,36 +218,32 @@ public class Force {
         }
     }
     // food search - bacteria "a" look for closest food in array "bact"
-    private static void foodSearch_pred(Bacteria a, ArrayList<Bacteria> bact) {
-        if (a.saturation > 80 || bact.size() == 0) {
+    private static void foodSearch_pred(RedBact a) {
+        // predator won't eat prey if his saturation > 95 or count preys < 6
+        if (a.food > 6f || (MapPanel.yellowBactList.size() < 6 && MapPanel.blueBactList.size() < 6)) {
             randomRotation(a);
             return;
         }
-        int width = MainPanel.mapPanel.getWidth();
-        int height = MainPanel.mapPanel.getHeight();
         float distanceToEat = MapPanel.RADIUS_BACTERIA * MapPanel.RADIUS_BACTERIA + MapPanel.RADIUS_BACTERIA * MapPanel.RADIUS_BACTERIA;
-        float minFoodDist = (width * width) + (height * height);
         if (a.type == 0) {
             Bacteria closestFood = null;
-            // find minFoodDist
-            for (Bacteria b : bact) {
-                if (a == b || b.toBeDeleted) continue;
-                float dist2 = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
-                if (dist2 < a.sightDistance * a.sightDistance) {
-                    if (dist2 < minFoodDist && b.food < 6f) {
-                        minFoodDist = dist2;
-                        closestFood = b;
-                    }
-                }
-            }
+            closestFood = closestBact(a, MapPanel.yellowBactList, closestFood, distBetween(a, closestFood));
+            closestFood = closestBact(a, MapPanel.blueBactList, closestFood, distBetween(a, closestFood));
             // if find food - change rotation to food
             if (closestFood != null) {
                 a.rotationX = closestFood.x - a.x;
                 a.rotationY = closestFood.y - a.y;
 
-                if (minFoodDist < distanceToEat) {
-                    closestFood.toBeDeleted = true;
-                    a.food += closestFood.food * 0.1f;
+                if (distBetween(a, closestFood) < distanceToEat && closestFood.food < 4f) {
+                    float protection = 1f;
+                    if (closestFood.type == 2) protection = Math.abs(1 - ((BlueBact) closestFood).protection);
+                    ((YellowBact)closestFood).health -= a.damage * protection;
+                    if (((YellowBact)closestFood).health <= 0) {
+                        closestFood.toBeDeleted = true;
+                        float getFood = closestFood.food * 0.1f;
+                        a.food += getFood;
+                        a.saturation += getFood * 5;
+                    }
                 }
             }
             // else - random rotation
@@ -254,6 +251,24 @@ public class Force {
                 randomRotation(a);
             }
         }
+    }
+    private static Bacteria closestBact(Bacteria a, ArrayList<Bacteria> bact, Bacteria closestFood, float minFoodDist) {
+        // find minFoodDist
+        for (Bacteria b : bact) {
+            if (a == b || b.toBeDeleted) continue;
+            float dist2 = (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
+            if (dist2 < a.sightDistance * a.sightDistance) {
+                if (dist2 < minFoodDist && b.food < 6f) {
+                    minFoodDist = dist2;
+                    closestFood = b;
+                }
+            }
+        }
+        return closestFood;
+    }
+    private static float distBetween(Bacteria a, Bacteria b) {
+        if (b == null) return MapPanel.WIDTH * MapPanel.WIDTH + MapPanel.HEIGHT * MapPanel.HEIGHT;
+        return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
     }
     private static void randomRotation(Bacteria a) {
         if (Math.random() < a.directionChangeRate) {
@@ -267,7 +282,7 @@ public class Force {
         int width = MainPanel.mapPanel.getWidth();
         int height = MainPanel.mapPanel.getHeight();
         float minFoodDist = (width * width) + (height * height);
-        if (a.type == 1) {
+        if (a.type != 0) {
             Food closestFood = null;
             // find min food distance
             for (Food f : MapPanel.foodList) {
@@ -300,7 +315,7 @@ public class Force {
         }
     }
     private static void spawnFood() {
-        if (MapPanel.foodList.size() < MAX_FOOD && frameFood == SPAWNRATE_FOOD) {
+        if (MapPanel.foodList.size() < MAX_FOOD_ON_SCREEN && frameFood == SPAWNRATE_FOOD) {
             Food fd = new Food((float)(Math.random() * (MapPanel.WIDTH - 100) + 50), (float)(Math.random() * (MapPanel.HEIGHT - 100) + 50));
             MapPanel.foodList.add(fd);
         }
@@ -309,19 +324,41 @@ public class Force {
         for (int i = 0; i < bact.size(); i++) {
             Bacteria a = bact.get(i);
             if (a.food >= 6) {
-                a.food -= 4;
+                a.food -= 3;
                 int type = a.type;
-                if (Math.random() < 0.05) {
-                    type = (int) (Math.random() * 2);
+                if (Math.random() < 0.05f) {
+                    type = (int) (Math.random() * 3);
                 }
-                Bacteria b = new Bacteria(0, 0, Color.BLACK);
                 if (type == 0) {
-                    b = new RedBact(a.x + (float) Math.random() * 10 - 5, a.y + (float) Math.random() * 10 - 5, Color.red);
+                    Bacteria b = new RedBact(a.x + (float) Math.random() * 10 - 5, a.y + (float) Math.random() * 10 - 5);
+                    if (Math.random() > 0.4f) {
+                        if (((RedBact)b).damage < 10) ((RedBact) b).damage++;
+                    }
+                    else {
+                        if (((RedBact)b).damage > 3) ((RedBact) b).damage--;
+                    }
+                    MainPanel.mapPanel.redBactList.add(b);
                 }
                 else if (type == 1) {
-                    b = new YellowBact(a.x + (float) Math.random() * 10 - 5, a.y + (float) Math.random() * 10 - 5, Color.yellow);
+                    Bacteria b = new YellowBact(a.x + (float) Math.random() * 10 - 5, a.y + (float) Math.random() * 10 - 5);
+                    if (Math.random() > 0.4f) {
+                        if (((YellowBact)b).health < 200) ((YellowBact)b).health += 10;
+                    }
+                    else {
+                        if (((YellowBact)b).health > 50) ((YellowBact)b).health -= 10;
+                    }
+                    MainPanel.mapPanel.yellowBactList.add(b);
                 }
-                bact.add(b);
+                else if (type == 2) {
+                    Bacteria b = new BlueBact(a.x + (float) Math.random() * 10 - 5, a.y + (float) Math.random() * 10 - 5);
+                    if (Math.random() > 0.4f) {
+                        if (((BlueBact)b).protection < 0.8f) ((BlueBact)b).protection += 0.05f;
+                    }
+                    else {
+                        if (((BlueBact)b).protection > 0.2f) ((BlueBact)b).protection -= 0.05f;
+                    }
+                    MainPanel.mapPanel.blueBactList.add(b);
+                }
             }
         }
     }
@@ -336,7 +373,10 @@ public class Force {
             for (int i = 0; i < bact.size(); i++) {
                 Bacteria a = bact.get(i);
                 a.age++;
-                a.saturation -= Math.random() * 10;
+                a.food -= FOOD_FOR_AGE;
+                if (a.type == 0) {
+                    ((RedBact) a).saturation -= Math.random() * 5;
+                }
             }
         }
     }
@@ -376,12 +416,13 @@ public class Force {
         setSpawnrateFood();
         setBacteriaSpeed();
         setTimerDelay();
+        setTimePeriod();
     }
     private static void setBacteriaSpeed() {
         SPEED_BACTERIA = MainPanel.bacteriaParamPanel.getSpeed();
     }
     private static void setMaxCountFood() {
-        MAX_FOOD = MainPanel.foodParamPanel.getMaxcountFood();
+        MAX_FOOD_ON_SCREEN = MainPanel.foodParamPanel.getMaxcountFood();
     }
     private static void setSpawnrateFood() {
         SPAWNRATE_FOOD = MainPanel.foodParamPanel.getSpawnrate();
@@ -397,5 +438,8 @@ public class Force {
         TIMER_DELAY = MainPanel.controlPanel.getTimerDelay();
         timer.setDelay(TIMER_DELAY);
     }
-
+    private static void setTimePeriod() {
+        TIME_PERIOD = MainPanel.bacteriaParamPanel.getAgingTime();
+        if (frameAge > TIME_PERIOD) frameAge = TIME_PERIOD;
+    }
 }

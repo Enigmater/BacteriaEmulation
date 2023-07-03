@@ -11,7 +11,6 @@ public class MainWindow extends JFrame implements Runnable{
         setupPanel();
         setVisible(true);
     }
-
     private void setupView() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -29,7 +28,6 @@ public class MainWindow extends JFrame implements Runnable{
         mainPanel = new MainPanel();
         this.add(mainPanel);
     }
-
     @Override
     public void run() {
         while (true) {
