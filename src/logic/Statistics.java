@@ -1,6 +1,6 @@
-package gui.statistics;
+package logic;
 
-import data.Bacteria;
+import data.Bacteria.Bacteria;
 import gui.map.MapPanel;
 
 import javax.swing.*;
@@ -31,13 +31,23 @@ public class Statistics {
                 time += timer.getDelay() / 1000;
             }
         });
-        timer.start();
     }
 
     public static void clear() {
         statisticsRed.clear();
         statisticsYellow.clear();
         statisticsBlue.clear();
+        time = 0;
+    }
+    public static void start() {
+        timer.start();
+    }
+    public static void pause() {
+        timer.stop();
+    }
+    public static void stop() {
+        clear();
+        timer.stop();
     }
     public void addValue(Map<Integer, Integer> src, int time, ArrayList<Bacteria> bact) {
         src.put(time, bact.size());

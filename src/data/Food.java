@@ -7,7 +7,6 @@ public class Food {
     public float x;
     public float y;
     public boolean toBeDeleted;
-
     public static Color[] COLOR = {
             new Color(255, 100, 100, 100),
             new Color(200, 200, 100, 100),
@@ -16,7 +15,6 @@ public class Food {
             new Color(50, 50, 255, 100),
             new Color(150, 50, 150, 100)
     };
-
     public Food(float x, float y) {
         this.x = x;
         this.y = y;

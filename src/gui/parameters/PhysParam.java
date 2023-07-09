@@ -1,4 +1,4 @@
-package gui.parametrs;
+package gui.parameters;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -13,10 +13,20 @@ public class PhysParam extends JPanel {
     private static JSlider gravitySlider;
     private static JLabel gravityValue;
 
-    private static JLabel radiusInteractionTitle = new JLabel("Radius");
+    private static JLabel radiusInteractionTitle = new JLabel("R.Gravity");
     private static JPanel radiusInteractionPanel;
     private static JSlider radiusInteractionSlider;
     private static JLabel radiusInteractionValue;
+
+    private static JLabel radiusBacteriaTitle = new JLabel("R.Bacteria");
+    private static JPanel radiusBacteriaPanel;
+    private static JSlider radiusBacteriaSlider;
+    private static JLabel radiusBacteriaValue;
+
+    private static JLabel radiusFoodTitle = new JLabel("R.Food");
+    private static JPanel radiusFoodPanel;
+    private static JSlider radiusFoodSlider;
+    private static JLabel radiusFoodValue;
 
     public PhysParam() {
         setupView();
@@ -32,15 +42,60 @@ public class PhysParam extends JPanel {
 
     private void setupSliders() {
         // setup gravity block
-        this.add(gravityTitle);
         setupGravityPanel();
         // setup radius interaction block
-        this.add(radiusInteractionTitle);
         setupRadiusInteractionPanel();
+        setupRadiusBacteriaPanel();
+        setupRadiusFoodPanel();
     }
-
+    private void setupRadiusBacteriaPanel() {
+        radiusBacteriaPanel = new JPanel();
+        radiusBacteriaPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        radiusBacteriaPanel.add(radiusBacteriaTitle);
+        setupRadiusBacteriaSlider();
+        setupRadiusBacteriaLabel();
+        this.add(radiusBacteriaPanel);
+    }
+    private void setupRadiusBacteriaSlider() {
+        radiusBacteriaSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, 5);
+        radiusBacteriaSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                radiusBacteriaValue.setText(Integer.toString(radiusBacteriaSlider.getValue()));
+            }
+        });
+        radiusBacteriaPanel.add(radiusBacteriaSlider);
+    }
+    private void setupRadiusBacteriaLabel() {
+        radiusBacteriaValue = new JLabel(Integer.toString(radiusBacteriaSlider.getValue()));
+        radiusBacteriaPanel.add(radiusBacteriaValue);
+    }
+    private void setupRadiusFoodPanel() {
+        radiusFoodPanel = new JPanel();
+        radiusFoodPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        radiusFoodPanel.add(radiusFoodTitle);
+        setupRadiusFoodSlider();
+        setupRadiusFoodLabel();
+        this.add(radiusFoodPanel);
+    }
+    private void setupRadiusFoodSlider() {
+        radiusFoodSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, 5);
+        radiusFoodSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                radiusFoodValue.setText(Integer.toString(radiusFoodSlider.getValue()));
+            }
+        });
+        radiusFoodPanel.add(radiusFoodSlider);
+    }
+    private void setupRadiusFoodLabel() {
+        radiusFoodValue = new JLabel(Integer.toString(radiusFoodSlider.getValue()));
+        radiusFoodPanel.add(radiusFoodValue);
+    }
     private void setupGravityPanel() {
         gravityPanel = new JPanel();
+        gravityPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        gravityPanel.add(gravityTitle);
         setupGravitySlider();
         setupGravityLabel();
         this.add(gravityPanel);
@@ -55,15 +110,15 @@ public class PhysParam extends JPanel {
         });
         gravityPanel.add(gravitySlider);
     }
-
     private void setupGravityLabel() {
         gravityValue = new JLabel();
         gravityValue.setText(Integer.toString(gravitySlider.getValue()));
         gravityPanel.add(gravityValue);
     }
-
     private void setupRadiusInteractionPanel() {
         radiusInteractionPanel = new JPanel();
+        radiusInteractionPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        radiusInteractionPanel.add(radiusInteractionTitle);
         setupRadiusInteractionSlider();
         setupRadiusInteractLabel();
         this.add(radiusInteractionPanel);
@@ -89,5 +144,11 @@ public class PhysParam extends JPanel {
 
     public float getRadiusInteractionValue() {
         return radiusInteractionSlider.getValue();
+    }
+    public int getRadiusBacteria() {
+        return radiusBacteriaSlider.getValue();
+    }
+    public int getRadiusFood() {
+        return radiusFoodSlider.getValue();
     }
 }

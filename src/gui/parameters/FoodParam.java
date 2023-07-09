@@ -1,4 +1,4 @@
-package gui.parametrs;
+package gui.parameters;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -7,10 +7,10 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class FoodParam extends JPanel {
-    public static final int START_MAXCOUNT_FOOD = 50;
+    public static final int START_MAXCOUNT_FOOD = 80;
     public static final int MAX_MAXCOUNT_FOOD = 100;
-    public static final int START_SPAWNRATE = 85;
-    public static final int MAX_SPAWNRATE = 100;
+    public static final int START_SPAWNRATE = 20;
+    public static final int MAX_SPAWNRATE = 20;
     // max count food
     private static JLabel maxCountFoodTitle = new JLabel("Max food");
     private static JPanel maxCountFoodPanel;
@@ -31,7 +31,7 @@ public class FoodParam extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(new TitledBorder("Food Parameters"));
         setPreferredSize(new Dimension(300, 0));
-        setMaximumSize(new Dimension(300, 1000));
+        setMaximumSize(new Dimension(300, 550));
     }
     private void setupSliders() {
         // count red bacteria slider

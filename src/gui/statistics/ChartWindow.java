@@ -1,6 +1,7 @@
 package gui.statistics;
 
 import gui.control.ControlPanel;
+import logic.Statistics;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -17,7 +18,7 @@ public class ChartWindow extends JFrame implements Runnable {
     private static final Color BG_COLOR = Color.DARK_GRAY;
     private static final Color FG_COLOR = Color.WHITE;
     public static int TIME_SCALE = 5;
-    public static int COUNT_SCALE = 1;
+    public static int COUNT_SCALE = 2;
 
     public ChartWindow() {
         setupView();
@@ -104,12 +105,18 @@ public class ChartWindow extends JFrame implements Runnable {
         int x1 = xZero + 10;
         int y1 = yZero - 10;
         int x2, y2;
-        for(Map.Entry<Integer, Integer> item : stat.entrySet()) {
+        TIME_SCALE = controlPanel.chartScaleSliders.getTimeScale();
+        COUNT_SCALE = controlPanel.chartScaleSliders.getCountScale();
+        for (Map.Entry<Integer, Integer> item : stat.entrySet()) {
             x2 = xZero + item.getKey() * TIME_SCALE + 10;     // count
             y2 = yZero - item.getValue() * COUNT_SCALE - 10;   // time
             g.drawLine(x1, y1, x2, y2);
             x1 = x2;
             y1 = y2;
+            if (TIME_SCALE == 1 && x1 > xMax) {
+                Statistics.clear();
+                break;
+            }
         }
     }
 }

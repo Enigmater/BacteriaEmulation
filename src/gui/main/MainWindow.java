@@ -1,7 +1,5 @@
 package gui.main;
 
-import gui.main.MainPanel;
-
 import javax.swing.*;
 
 public class MainWindow extends JFrame implements Runnable{

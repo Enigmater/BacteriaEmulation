@@ -1,8 +1,8 @@
 package gui.main;
 
-import gui.parametrs.BacteriaParam;
-import gui.parametrs.FoodParam;
-import gui.parametrs.PhysParam;
+import gui.parameters.BacteriaParam;
+import gui.parameters.FoodParam;
+import gui.parameters.PhysParam;
 import gui.control.ControlPanel;
 import gui.map.MapPanel;
 import javax.swing.*;
@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
     public static JPanel leftGroupPanel;
     public static JPanel centerGroupPanel;
     public static JPanel rightGroupPanel;
-    //
+
     public static PhysParam physParamPanel;
     public static BacteriaParam bacteriaParamPanel;
     public static FoodParam foodParamPanel;
@@ -22,7 +22,6 @@ public class MainPanel extends JPanel {
     public MainPanel() {
         setupView();
         setupGroupPanel();
-
         setupMapPanel();
         setupPhysParamPanel();
         setupBacteriaParamPanel();

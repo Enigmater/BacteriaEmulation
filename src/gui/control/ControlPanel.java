@@ -1,7 +1,7 @@
 package gui.control;
 
 import gui.main.MainPanel;
-import gui.statistics.Statistics;
+import logic.Statistics;
 import logic.Force;
 
 import javax.swing.*;
@@ -13,35 +13,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ControlPanel extends JPanel {
-
     private static final int START_SPEED = 100;
-    public static boolean isStart;
+    public static boolean isStart;  // emulation is start?
     // buttons (update, start, pause, stop)
     private JButton startButton;
     private JButton pauseButton;
     private JButton stopButton;
     private JButton updateButton;
-
-    // speed
+    // speed slider
     private static JLabel speedTitle = new JLabel("Speed");
     private static JPanel speedPanel;
     private static JSlider speedSlider;
     private static JLabel speedValue;
-
     public ControlPanel() {
         setupView();
         setupButtons();
         setupSpeedPanel();
         setVisible(true);
     }
-
     private void setupView() {
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setBorder(new TitledBorder("Control buttons"));
         setPreferredSize(new Dimension(0, 100));
         setMaximumSize(new Dimension(300, 100));
     }
-
     private void setupButtons() {
         setupStartButton();
         setupPauseButton();
@@ -49,7 +44,6 @@ public class ControlPanel extends JPanel {
         setupUpdateButton();
         addButtons();
     }
-
     private void setupStartButton() {
         // START
         this.startButton = new JButton();
@@ -59,6 +53,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.start();
+                Statistics.start();
                 isStart = true;
                 startButton.setEnabled(false);
                 pauseButton.setEnabled(true);
@@ -79,6 +74,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.pause();
+                Statistics.pause();
                 isStart = false;
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
@@ -99,7 +95,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.stop();
-                Statistics.clear();
+                Statistics.stop();
                 isStart = false;
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
@@ -120,6 +116,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Force.update();
+                Statistics.stop();
                 Statistics.clear();
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
@@ -134,7 +131,6 @@ public class ControlPanel extends JPanel {
         add(pauseButton);
         add(stopButton);
     }
-
     private void setupSpeedPanel() {
         speedPanel = new JPanel();
         speedPanel.add(speedTitle);
@@ -157,7 +153,6 @@ public class ControlPanel extends JPanel {
         speedValue.setText(Integer.toString(speedSlider.getValue()));
         speedPanel.add(speedValue);
     }
-
     public int getTimerDelay() {
         return Math.abs(speedSlider.getValue() - speedSlider.getMaximum());
     }

@@ -11,6 +11,8 @@ public class ChartControlPanel extends JPanel implements ActionListener {
     private static JRadioButton radioButtonRed;
     private static JRadioButton radioButtonYellow;
     private static JRadioButton radioButtonBlue;
+    private static JPanel buttonsPanel;
+    public static ChartScaleSliders chartScaleSliders;
 
     public static String activeChart;
     private static final Color BG_COLOR = Color.DARK_GRAY;
@@ -21,6 +23,7 @@ public class ChartControlPanel extends JPanel implements ActionListener {
         groupButtons();
         registerButtons();
         addButtons();
+        setupSliders();
         setVisible(true);
     }
 
@@ -29,7 +32,7 @@ public class ChartControlPanel extends JPanel implements ActionListener {
         TitledBorder tb = new TitledBorder("Choose bacteria");
         tb.setTitleColor(FG_COLOR);
         setBorder(tb);
-        setPreferredSize(new Dimension(70, 500));
+        setPreferredSize(new Dimension(150, 500));
         setMaximumSize(new Dimension(500, 500));
     }
 
@@ -63,9 +66,17 @@ public class ChartControlPanel extends JPanel implements ActionListener {
         radioButtonBlue.addActionListener(this);
     }
     private void addButtons() {
-        this.add(radioButtonRed);
-        this.add(radioButtonYellow);
-        this.add(radioButtonBlue);
+        buttonsPanel = new JPanel();
+        buttonsPanel.setBackground(Color.DARK_GRAY);
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
+        buttonsPanel.add(radioButtonRed);
+        buttonsPanel.add(radioButtonYellow);
+        buttonsPanel.add(radioButtonBlue);
+        this.add(buttonsPanel);
+    }
+    private void setupSliders() {
+        chartScaleSliders = new ChartScaleSliders();
+        this.add(chartScaleSliders);
     }
 
     @Override

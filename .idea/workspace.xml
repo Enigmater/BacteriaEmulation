@@ -5,22 +5,31 @@
       <artifact name="emul:jar" />
     </artifacts-to-build>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a268ba0c-29c7-4246-8a7d-6a3d091ad376" name="Changes" comment="add bacteria characteristics (new types),update reproduction">
-      <change afterPath="$PROJECT_DIR$/src/gui/statistics/ChartControlPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/statistics/ChartWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/statistics/Statistics.java" afterDir="false" />
+    <list default="true" id="a268ba0c-29c7-4246-8a7d-6a3d091ad376" name="Changes" comment="add statistics (charts) for count bacteria">
+      <change afterPath="$PROJECT_DIR$/src/data/Bacteria/GreenBact.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/parameters/BacteriaParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/statistics/ChartScaleSliders.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/Bacteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/Bacteria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/RedBact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/RedBact.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/control/BacteriaParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parametrs/BacteriaParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/Bacteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/Bacteria/Bacteria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/BlueBact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/Bacteria/BlueBact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/Food.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/Food.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/RedBact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/Bacteria/RedBact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/YellowBact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/Bacteria/YellowBact.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/control/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/control/ControlPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/control/FoodParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parametrs/FoodParam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/control/PhysParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parametrs/PhysParam.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/main/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/main/MainPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/main/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/main/MainWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/map/MapPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/map/MapPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/parametrs/BacteriaParam.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/parametrs/FoodParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parameters/FoodParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/parametrs/PhysParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/parameters/PhysParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/statistics/ChartControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/statistics/ChartControlPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/statistics/ChartWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/statistics/ChartWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/statistics/Statistics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/Statistics.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logic/Force.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/Force.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/runner/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/runner/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,18 +56,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ToolWindowRun.ShowToolbar": "false",
-    "last_opened_file_path": "C:/Users/Enigmater/Downloads/jfreechart-1.5.2/jfreechart-1.5.2/src/main/java/org/jfree/chart",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ToolWindowRun.ShowToolbar&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Enigmater/IdeaProjects/emul&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="runner.Main" />
@@ -87,6 +105,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1687769256433</updated>
+      <workItem from="1688883248565" duration="570000" />
+      <workItem from="1688883843046" duration="1665000" />
+      <workItem from="1688903284575" duration="4378000" />
     </task>
     <task id="LOCAL-00001" summary="add mainForm, class Bacteria and gravityRules">
       <created>1687927446301</created>
@@ -123,8 +144,18 @@
       <option name="project" value="LOCAL" />
       <updated>1688374804010</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add statistics (charts) for count bacteria">
+      <created>1688390262765</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1688390262765</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -143,7 +174,8 @@
     <MESSAGE value="add pred/preys, food, and reproduction" />
     <MESSAGE value="add saturation; aging and dying bacteria" />
     <MESSAGE value="add bacteria characteristics (new types),update reproduction" />
-    <option name="LAST_COMMIT_MESSAGE" value="add bacteria characteristics (new types),update reproduction" />
+    <MESSAGE value="add statistics (charts) for count bacteria" />
+    <option name="LAST_COMMIT_MESSAGE" value="add statistics (charts) for count bacteria" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -151,5 +183,9 @@
         <watch expression="SPAWNRATE_FOOD" language="JAVA" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
